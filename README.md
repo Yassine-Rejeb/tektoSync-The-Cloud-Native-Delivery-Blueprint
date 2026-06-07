@@ -159,6 +159,8 @@ spec:
 
 Follow this step-by-step guide to bootstrap the `tektoSync` environment across your Gitea host and OpenShift Local (CRC) cluster.
 
+***PS:*** Make sure to remove/change the instances of http://theplayground:3000/ with the URL of your local gitea server.
+
 ### Phase 1: Git Repository Setup (Gitea Host)
 
 1. Log into your Gitea instance and generate a **Personal Access Token (PAT)** with repository read/write permissions.
