@@ -1,0 +1,10 @@
+apiVersion: v1
+stringData:
+  password: 2017b40585a7d1525fa02e72d55d71676e138f81
+  username: yass
+kind: Secret
+metadata:
+  annotations:
+    tekton.dev/git-0: http://theplayground.home:3000/
+  name: gitea-creds
+type: kubernetes.io/basic-auth

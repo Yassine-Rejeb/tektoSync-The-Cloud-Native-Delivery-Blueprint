@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gitea-repo-creds
+  namespace: openshift-gitops
+  labels:
+    argocd.argoproj.io/secret-type: repo-creds
+stringData:
+  url: http://theplayground.home:3000
+  username: yass
+  password: 2017b40585a7d1525fa02e72d55d71676e138f81
+  insecure: "true"

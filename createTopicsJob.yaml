@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-kafka-topics
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: kafka-client
+        image: quay.io/strimzi/kafka:0.31.1-kafka-3.2.3
+        command: ["/bin/sh","-c"]
+        args:
+        - |
+          BOOTSTRAP=kafka:9092
+          TOPIC=orders
+          if ! bin/kafka-topics.sh --bootstrap-server $BOOTSTRAP --list | grep -q "^$TOPIC$"; then
+            bin/kafka-topics.sh --bootstrap-server $BOOTSTRAP --create --topic $TOPIC --partitions 10 
+          fi
+          TOPIC=payments
+          if ! bin/kafka-topics.sh --bootstrap-server $BOOTSTRAP --list | grep -q "^$TOPIC$"; then
+            bin/kafka-topics.sh --bootstrap-server $BOOTSTRAP --create --topic $TOPIC --partitions 10
+          fi
+      restartPolicy: OnFailure
+
