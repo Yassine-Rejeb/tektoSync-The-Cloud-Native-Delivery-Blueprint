@@ -1,0 +1,67 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log
+.pnp/
+.pnp.js
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+env/
+venv/
+venv.bak/
+.Python
+pip-log.txt
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+target/
+build/
+
+# IDEs / editors
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Logs and temp
+*.log
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Build artifacts
+dist/
+out/
+build/
+
+# Secrets / credentials
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+.git-token*
+.gitea-token*
+
+# Git
+*.patch
+*.diff
+
+# Misc
+coverage/
+coverage.*
+.cache/
+coverage-report/
+
