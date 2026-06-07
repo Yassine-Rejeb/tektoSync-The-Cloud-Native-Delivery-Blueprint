@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalogservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: catalogservice
+  template:
+    metadata:
+      labels:
+        app: catalogservice
+    spec:
+      containers:
+        - name: catalogservice
+          image: catalog-service
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 7072
+          env:
+            - name: COOLSTORE_DB_SERVICE_HOST
+              value: "coolstoreDB"
+            - name: INVENTORY_SERVICE_HOST
+              value: "inventory"
+            - name: INVENTORY_SERVICE_PORT
+              value: "8080"
+            - name: COOLSTORE_GW_ENDPOINT
+              value: catalog

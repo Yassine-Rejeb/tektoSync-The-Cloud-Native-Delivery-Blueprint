@@ -1,0 +1,34 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: coolstore-front-end-pipeline-run-
+spec:
+  pipelineRef:
+    name: coolstore-front-end-pipeline
+  params:
+    - name: APP_NAME
+      value: "front-end"
+    - name: SOURCE_REPO_URL
+      value: "http://theplayground.home:3000/yass/coolstore-nodejs.git"
+    - name: MANIFEST_REPO_URL
+      value: "http://theplayground.home:3000/yass/tektoSync-Config.git"
+  workspaces:
+    - name: shared-data
+      persistentVolumeClaim:
+        claimName: tekton-workspace
+  taskRunSpecs:
+    - pipelineTaskName: update-kustomize-img
+      serviceAccountName: pipeline
+      taskRunSpec:
+        spec:
+          steps:
+          - name: build
+            env:
+            - name: OPENSHIFT_BUILD_NAMESPACE
+              value: "dev-sandbox"
+      podTemplate:
+        securityContext:
+          fsGroup: 65532
+          supplementalGroups: [999, 65532]
+  taskRunTemplate:
+    serviceAccountName: pipeline

@@ -1,0 +1,25 @@
+schemaVersion: 2.2.2
+metadata:
+  name: coolstore-demo-node
+components:
+  - name: tools
+    container:
+      image: registry.redhat.io/devspaces/udi-rhel8:3.13
+      endpoints:
+        - exposure: public
+          name: inventory-index
+          targetPort: 8080
+        - exposure: none
+          name: debug
+          targetPort: 5858
+      memoryLimit: 6Gi
+      memoryRequest: 4Gi
+      cpuLimit: 2000m
+      cpuRequest: 500m
+      mountSources: true
+      volumeMounts:
+        - name: npm
+          path: /home/user/.npm
+  - name: npm
+    volume:
+      size: 1G

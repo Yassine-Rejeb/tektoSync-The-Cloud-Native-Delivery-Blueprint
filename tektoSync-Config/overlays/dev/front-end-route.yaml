@@ -1,0 +1,11 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: front-end
+spec:
+  port:
+    targetPort: 8081
+  to:
+    kind: ""
+    name: front-end
+    weight: null

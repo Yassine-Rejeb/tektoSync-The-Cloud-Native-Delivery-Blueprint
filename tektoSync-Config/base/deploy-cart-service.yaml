@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cartservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cartservice
+  template:
+    metadata:
+      labels:
+        app: cartservice
+    spec:
+      containers:
+        - name: cartservice
+          image: cart-service
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 7074
+          env:
+            - name: REDIS_SERVICE_HOST
+              value: "cartCache"
+            - name: MY_CLUSTER_KAFKA_BOOTSTRAP_SERVICE_HOST
+              value: "kafka"
+            - name: COOLSTORE_GW_ENDPOINT
+              value: cart

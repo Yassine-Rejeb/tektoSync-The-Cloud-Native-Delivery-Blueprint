@@ -1,0 +1,74 @@
+[
+  {
+    "itemId": "329299",
+    "title": "Quarkus T-shirt",
+    "desc": "Mens Clothing",
+    "price": 10.00,
+    "quantity": 0,
+    "image": "329299.jpg",
+    "category": "Mens Clothing"
+  },
+  {
+    "itemId": "329199",
+    "title": "Pronounced Kubernetes",
+    "desc": "Mens Clothing",
+    "price": 9.00,
+    "quantity": 0,
+    "image": "329199.jpg",
+    "category": "Mens Clothing"
+  },
+  {
+    "itemId": "165613",
+    "title": "Knit socks",
+    "desc": "Accessories",
+    "price": 4.15,
+    "quantity": 0,
+    "image": "165613.jpg",
+    "category": "Accessories"
+  },
+  {
+    "itemId": "165614",
+    "title": "Quarkus H2Go water bottle",
+    "desc": "Accessories",
+    "price": 14.45,
+    "quantity": 0,
+    "image": "165614.jpg",
+    "category": "Accessories"
+  },
+  {
+    "itemId": "165954",
+    "title": "Patagonia Refugio pack 28L",
+    "desc": "Accessories",
+    "price": 6.00,
+    "quantity": 0,
+    "image": "165954.jpg",
+    "category": "Accessories"
+  },
+  {
+    "itemId": "444434",
+    "title": "Red Hat Impact T-shirt",
+    "desc": "Womens Clothing",
+    "price": 9.00,
+    "quantity": 0,
+    "image": "444434.jpg",
+    "category": "Womens Clothing"
+  },
+  {
+    "itemId": "444435",
+    "title": "Quarkus twill cap",
+    "desc": "Accessories",
+    "price": 13.00,
+    "quantity": 0,
+    "image": "444435.jpg",
+    "category": "Accessories"
+  },
+  {
+    "itemId": "444437",
+    "title": "Nanobloc Universal Webcam Cover",
+    "desc": "Accessories",
+    "price": 2.75,
+    "quantity": 0,
+    "image": "444437.jpg",
+    "category": "Accessories"
+  }
+]

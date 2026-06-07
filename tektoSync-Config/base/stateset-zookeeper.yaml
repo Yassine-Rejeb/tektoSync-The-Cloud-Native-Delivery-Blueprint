@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zookeeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coolstore-zookeeper
+  template:
+    metadata:
+      labels:
+        app: coolstore-zookeeper
+    spec:
+      containers:
+      - name: zookeeper
+        image: quay.io/strimzi/kafka:0.31.1-kafka-3.2.3
+        command:
+        - "sh"
+        - "-c"
+        - "bin/zookeeper-server-start.sh config/zookeeper.properties"
+        ports:
+        - containerPort: 2181
+        env:
+        - name: LOG_DIR
+          value: /tmp/logs

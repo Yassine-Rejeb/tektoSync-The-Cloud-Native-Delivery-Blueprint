@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: coolstore-db
+  namespace: coolstore-dev
+spec:
+  selector:
+    deployment: coolstore-db
+  ports:
+    - name: 27017-tcp
+      protocol: TCP
+      port: 27017
+      targetPort: 27017
+  type: ClusterIP

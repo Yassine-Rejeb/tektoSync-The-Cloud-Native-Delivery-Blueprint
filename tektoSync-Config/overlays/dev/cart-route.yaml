@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: cart
+  namespace: dev-sandbox
+spec:
+  host: cart-dev-sandbox.apps-crc.testing
+  port:
+    targetPort: 7074
+  to:
+    kind: Service
+    name: cart
+    weight: 100
+  wildcardPolicy: None

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: cartcache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coolstore-cartcache
+  template:
+    metadata:
+      labels:
+        app: coolstore-cartcache
+    spec:
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: cartcache-data
+      containers:
+      - name: cartcache
+        image: redis:latest 
+        command:
+        - "redis-server"
+        - "--save" 
+        - "20"
+        - "1" 
+        - "--loglevel"
+        - "warning"
+        restartPolicy: Always
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - name: data
+          mountPath: /data
+

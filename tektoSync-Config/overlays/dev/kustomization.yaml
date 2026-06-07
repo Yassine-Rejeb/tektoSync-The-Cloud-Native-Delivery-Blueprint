@@ -1,0 +1,30 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../base
+- front-end-route.yaml
+- cart-route.yaml
+- catalog-route.yaml
+- inventory-route.yaml
+- order-route.yaml
+- payment-route.yaml
+
+images:
+- name: cart-service
+  newName: image-registry.openshift-image-registry.svc:5000/dev-sandbox/cart-service
+  newTag: c576c35d29b82195104b1012c14a3ec656be6f23
+- name: catalog-service
+  newName: image-registry.openshift-image-registry.svc:5000/dev-sandbox/catalog-service
+  newTag: c576c35d29b82195104b1012c14a3ec656be6f23
+- name: front-end
+  newName: image-registry.openshift-image-registry.svc:5000/dev-sandbox/front-end
+  newTag: 6fc0c9952b3305c6f574dc4dec1399d1648613c3
+- name: inventory-service
+  newName: image-registry.openshift-image-registry.svc:5000/dev-sandbox/inventory-service
+  newTag: c576c35d29b82195104b1012c14a3ec656be6f23
+- name: order-service
+  newName: image-registry.openshift-image-registry.svc:5000/dev-sandbox/order-service
+  newTag: c576c35d29b82195104b1012c14a3ec656be6f23
+- name: payment-service
+  newName: image-registry.openshift-image-registry.svc:5000/dev-sandbox/payment-service
+  newTag: c576c35d29b82195104b1012c14a3ec656be6f23

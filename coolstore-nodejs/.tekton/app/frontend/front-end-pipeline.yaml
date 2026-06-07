@@ -1,0 +1,74 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: coolstore-front-end-pipeline
+  namespace: dev-sandbox
+spec:
+  params:
+    - name: SKIP_BUILD
+      type: string
+      default: "false"
+    - name: APP_NAME
+      type: string
+    - name: SOURCE_REPO_URL
+      type: string
+    - name: MANIFEST_REPO_URL
+      type: string
+  workspaces:
+    - name: shared-data
+  tasks:
+    - name: fetch-repository
+      taskRef:
+        resolver: hub
+        params:
+          - name: name
+            value: git-clone
+          - name: version
+            value: "0.9"
+      workspaces:
+        - name: output
+          workspace: shared-data
+      params:
+        - name: url
+          value: $(params.SOURCE_REPO_URL)
+        - name: sslVerify
+          value: "false"
+    
+    - name: build-image
+      runAfter: ["fetch-repository"]
+      when:
+        - input: "$(params.SKIP_BUILD)"
+          operator: in
+          values: ["false"]
+      taskRef:
+        resolver: hub
+        params:
+          - name: name
+            value: buildah
+          - name: version
+            value: "0.7"
+      workspaces:
+        - name: source
+          workspace: shared-data
+      params:
+        - name: IMAGE
+          value: image-registry.openshift-image-registry.svc:5000/dev-sandbox/$(params.APP_NAME):$(tasks.fetch-repository.results.commit)
+        - name: CONTEXT
+          value: $(params.APP_NAME)
+    
+    - name: update-kustomize-img
+      runAfter: ["build-image"]
+      taskRef:
+        name: update-kustomize-img
+      workspaces:
+        - name: source
+          workspace: shared-data
+      params:
+        - name: GIT_REPO_URL
+          value: $(params.MANIFEST_REPO_URL)
+        - name: IMAGE_NAME
+          value: $(params.APP_NAME)
+        - name: NEW_IMAGE
+          value: image-registry.openshift-image-registry.svc:5000/dev-sandbox/$(params.APP_NAME)
+        - name: NEW_TAG
+          value: $(tasks.fetch-repository.results.commit)

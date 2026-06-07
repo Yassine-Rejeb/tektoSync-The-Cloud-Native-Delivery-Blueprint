@@ -1,0 +1,88 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: update-kustomize-img
+  namespace: dev-sandbox
+spec:
+  params:
+    - name: GIT_REPO_URL
+      type: string
+      description: URL of the GitOps repository (Gitea).
+    - name: IMAGE_NAME
+      type: string
+      description: Name of the microservice image to update.
+    - name: NEW_IMAGE
+      type: string
+      description: The full registry path of the new image.
+    - name: NEW_TAG
+      type: string
+      description: The new tag/SHA to apply.
+    - name: OVERLAY_PATH
+      type: string
+      default: "overlays/dev"
+    - name: GIT_USER_NAME
+      type: string
+      default: "Tekton Pipeline"
+    - name: GIT_USER_EMAIL
+      type: string
+      default: "tekton@redhat.com"
+  workspaces:
+    - name: source
+      description: Shared workspace containing the scratch space for cloning.
+  steps:
+    - name: update-yaml
+      image: quay.io/argoproj/argocd:v2.8.4
+      workingDir: $(workspaces.source.path)
+      env:
+        - name: HOME 
+          value: $(workspaces.source.path)
+      script: |
+        #!/bin/sh
+        set -e
+
+        export GIT_SSL_NO_VERIFY=true
+        
+        TEMP_DIR="$(workspaces.source.path)/gitops-temp"
+        
+        mkdir -p "$TEMP_DIR"
+        git clone $(params.GIT_REPO_URL) "$TEMP_DIR"
+        
+        echo "=== Current Repository Structure ==="
+        pwd
+        ls
+        echo "===================================="
+
+        cd "$TEMP_DIR/$(params.OVERLAY_PATH)"
+
+        git config user.name "tektoSync-bot"
+        git config user.email "bot@tektosync.local"
+        
+        # Ensure we are on the correct branch
+        git checkout main
+
+        # Update the specific image tag for this service
+        kustomize edit set image "$(params.IMAGE_NAME)=$(params.NEW_IMAGE):$(params.NEW_TAG)" 
+        cd "$TEMP_DIR"
+
+        git add overlays/dev/kustomization.yaml
+        git commit -m "Automated GitOps update: $(params.IMAGE_NAME) to $(params.NEW_TAG)"
+
+        # Rebase and push loop to handle concurrent pipeline pushes
+        MAX_RETRIES=10
+        RETRY_COUNT=0
+        
+        until git push origin main; do
+          if [ ${RETRY_COUNT} -eq ${MAX_RETRIES} ]; then
+            echo "Failed to push after ${MAX_RETRIES} attempts."
+            exit 1
+          fi
+          
+          echo "Push failed due to concurrent update. Pulling latest changes and rebasing..."
+          # Random sleep to prevent synchronized retries across pipelines
+          sleep $((1 + RANDOM % 5))
+         
+          git pull --rebase origin main
+          RETRY_COUNT=$((RETRY_COUNT+1))
+        done
+        
+        echo "Successfully pushed $(params.IMAGE_NAME) update."

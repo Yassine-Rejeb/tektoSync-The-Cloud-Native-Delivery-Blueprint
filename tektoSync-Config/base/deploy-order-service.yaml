@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orderservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orderservice
+  template:
+    metadata:
+      labels:
+        app: orderservice
+    spec:
+      containers:
+        - name: orderservice
+          image: order-service
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          env:
+            - name: MY_CLUSTER_KAFKA_BOOTSTRAP_SERVICE_HOST
+              value: "kafka"
+            - name: COOLSTORE_DB_SERVICE_HOST
+              value: "coolstoreDB"
+            - name: COOLSTORE_GW_ENDPOINT
+              value: order

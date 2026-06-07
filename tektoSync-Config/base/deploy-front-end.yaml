@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-end
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coolstore-front-end
+  template:
+    metadata:
+      labels:
+        app: coolstore-front-end
+    spec:
+      containers:
+      - name: coolstore-front-end
+        image: front-end 
+        ports:
+        - containerPort: 8081
+        env:
+        - name: OPENSHIFT_BUILD_NAMESPACE
+          value: dev-sandbox

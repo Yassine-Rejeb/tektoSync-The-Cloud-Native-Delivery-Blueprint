@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cartcache-data  
+  namespace: dev-sandbox
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+     requests:
+       storage: 512Mi

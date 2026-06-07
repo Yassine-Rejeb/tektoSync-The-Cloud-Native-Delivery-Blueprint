@@ -1,0 +1,26 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- deploy-front-end.yaml
+- svc-front-end.yaml
+- cartcache-pvc.yaml
+- secret-mongo-creds.sealed.yaml
+- secret-mongo-init.sealed.yaml
+- stateset-zookeeper.yaml
+- svc-zookeeper.yaml
+- stateset-kafka.yaml
+- svc-kafka.yaml
+- stateset-coolstoredb.yaml
+- svc-coolstoredb.yaml
+- stateset-cartcache.yaml
+- svc-cartcache.yaml
+- deploy-cart-service.yaml
+- svc-cart-service.yaml
+- deploy-catalog-service.yaml
+- svc-catalog-service.yaml
+- deploy-inventory-service.yaml
+- svc-inventory-service.yaml
+- deploy-order-service.yaml
+- svc-order-service.yaml
+- deploy-payment-service.yaml
+- svc-payment-service.yaml

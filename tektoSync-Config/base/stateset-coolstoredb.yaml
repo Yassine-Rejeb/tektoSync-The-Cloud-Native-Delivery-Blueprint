@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: coolstoredb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coolstore-coolstoredb
+  template:
+    metadata:
+      labels:
+        app: coolstore-coolstoredb
+    spec:
+      volumes:
+      - name: mongo-init
+        secret:
+          secretName: mongo-init.js
+      containers:
+      - name: coolstoredb
+        image: docker.io/library/mongo:7.0.34-jammy 
+        ports:
+        - containerPort: 27017
+        securityContext:
+          runAsUser: 999
+        env:
+        - name: MONGO_INITDB_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secret
+              key: MONGO_INITDB_DATABASE 
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secret
+              key: MONGO_INITDB_ROOT_PASSWORD
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secret
+              key: MONGO_INITDB_ROOT_USERNAME
+        volumeMounts:
+        - name: mongo-init
+          mountPath: /docker-entrypoint-initdb.d/

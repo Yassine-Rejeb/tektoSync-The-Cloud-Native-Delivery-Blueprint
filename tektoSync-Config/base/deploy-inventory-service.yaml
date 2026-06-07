@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventoryservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventoryservice
+  template:
+    metadata:
+      labels:
+        app: inventoryservice
+    spec:
+      containers:
+        - name: inventoryservice
+          image: inventory-service
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: COOLSTORE_DB_SERVICE_HOST
+              value: "coolstoreDB"
+            - name: COOLSTORE_GW_ENDPOINT
+              value: inventory

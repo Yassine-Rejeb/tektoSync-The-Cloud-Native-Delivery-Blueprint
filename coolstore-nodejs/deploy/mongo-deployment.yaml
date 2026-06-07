@@ -1,0 +1,51 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: coolstore-db
+  labels:
+    app: coolstore-db
+    app.openshift.io/runtime: mongodb
+spec:
+  selector:
+    matchLabels:
+      deployment: coolstore-db
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        deployment: coolstore-db
+    spec:
+      volumes:
+        - name: coolstore-db-1
+          configMap:
+            name: mongo-db-init
+        - name: coolstore-db-2
+          emptyDir: {}
+      containers:
+        - resources: {}
+          terminationMessagePath: /dev/termination-log
+          name: coolstore-db
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: root
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: example
+            - name: MONGO_INITDB_DATABASE
+              value: Coolstore
+          ports:
+            - containerPort: 27017
+              protocol: TCP
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: coolstore-db-1
+              mountPath: "/docker-entrypoint-initdb.d/"
+            - name: coolstore-db-2
+              mountPath: /data/db
+          terminationMessagePolicy: File
+          image: docker.io/mongo:latest
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+      imagePullSecrets: []
