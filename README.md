@@ -1,6 +1,13 @@
 # tektoSync: The Cloud-Native Delivery Blueprint
 
-Sommaire
+Images:
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
+<a href="./images/argocd.jpg" class="glightbox" data-gallery="gallery1">  <img src="./images/argocd.jpg" alt="Gallery image 1" width="300"></a><a href="./images/ui.jpg" class="glightbox" data-gallery="gallery1">  <img src="./images/ui.jpg" alt="Gallery image 2" width="300"></a><a href="./images/gitea.jpg" class="glightbox" data-gallery="gallery1">  <img src="./images/gitea.jpg" alt="Gallery image 3" width="300"></a>
+<script src="https://cdn.jsdelivr.net/npm/glightbox"></script><script>  const lightbox = GLightbox({ touchNavigation: true });</script>
+
+Architecture:
+
 - [🏗️ Architecture Overview](#-architecture-overview)
   - [Diagram](#diagram)
   - [Application Repo (`coolstore-nodejs`)](#application-repo-coolstore-nodejs)
